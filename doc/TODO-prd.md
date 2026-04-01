@@ -9,16 +9,16 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Setup the base architecture and secure user entry.
 
 ### 📦 Module 1.1: Project Initialization
-- [ ] Initialize Git repository.
-- [ ] Setup Backend:
-    - [ ] `npm init -y` in `/server`.
-    - [ ] Install: `express mongoose dotenv cors cookie-parser jsonwebtoken bcryptjs multer socket.io`.
-    - [ ] Create folder structure: `src/{config,controllers,models,routes,middlewares,services,utils,socket}`.
-- [ ] Setup Frontend:
-    - [ ] `npm create vite@latest client -- --template react` in root.
-    - [ ] Install: `tailwindcss postcss autoprefixer lucide-react axios react-router-dom framer-motion @reduxjs/toolkit react-redux`.
-    - [ ] Create folder structure: `src/{components,pages,redux,services,hooks,utils}`.
-- [ ] [**GIT**] `git commit -m "Initialize server and client boilerplate with folder structures"`
+- [x] Initialize Git repository.
+- [x] Setup Backend:
+    - [x] `npm init -y` in `/server`.
+    - [x] Install: `express mongoose dotenv cors cookie-parser jsonwebtoken bcryptjs multer socket.io`.
+    - [x] Create folder structure: `src/{config,controllers,models,routes,middlewares,services,utils,socket}`.
+- [x] Setup Frontend:
+    - [x] `npm create vite@latest client -- --template react` in root.
+    - [x] Install: `tailwindcss postcss autoprefixer lucide-react axios react-router-dom framer-motion @reduxjs/toolkit react-redux`.
+    - [x] Create folder structure: `src/{components,pages,redux,services,hooks,utils}`.
+- [x] [**GIT**] `git commit -m "Initialize server and client boilerplate with folder structures"`
 
 ### 📦 Module 1.2: Database & Auth Backend
 - [ ] Configure MongoDB connection in `server/src/config/db.js`.
