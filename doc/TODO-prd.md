@@ -21,14 +21,14 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 - [x] [**GIT**] `git commit -m "Initialize server and client boilerplate with folder structures"`
 
 ### 📦 Module 1.2: Database & Auth Backend
-- [ ] Configure MongoDB connection in `server/src/config/db.js`.
-- [ ] Create `User` model (`server/src/models/User.js`) with roles: `['job-seeker', 'recruiter', 'admin']`.
-- [ ] Implement Auth Controllers (`server/src/controllers/authController.js`):
-    - [ ] Register (Hashing with bcrypt).
-    - [ ] Login (JWT generation & HTTP-only Cookie).
-- [ ] Implement `authMiddleware.js` for JWT verification and role checking.
-- [ ] Define Auth Routes (`server/src/routes/authRoutes.js`).
-- [ ] [**GIT**] `git commit -m "Implement JWT-based Auth backend with role support"`
+- [x] Configure MongoDB connection in `server/src/config/db.js`.
+- [x] Create `User` model (`server/src/models/User.js`) with roles: `['job-seeker', 'recruiter', 'admin']`.
+- [x] Implement Auth Controllers (`server/src/controllers/authController.js`):
+    - [x] Register (Hashing with bcrypt).
+    - [x] Login (JWT generation & HTTP-only Cookie).
+- [x] Implement `authMiddleware.js` for JWT verification and role checking.
+- [x] Define Auth Routes (`server/src/routes/authRoutes.js`).
+- [x] [**GIT**] `git commit -m "Implement JWT-based Auth backend with role support"`
 
 ### 📦 Module 1.3: Frontend Auth Integration
 - [ ] Setup React Router with `ProtectedRoute` component.
