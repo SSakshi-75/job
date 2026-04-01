@@ -14,6 +14,7 @@
     import userRoutes from "./src/routes/userRoutes.js";
     import jobRoutes from "./src/routes/jobRoutes.js";
     import applicationRoutes from "./src/routes/applicationRoutes.js";
+    import adminRoutes from "./src/routes/adminRoutes.js";
 
     config();
 
@@ -55,6 +56,7 @@
     app.use("/api/user", userRoutes);
     app.use("/api/jobs", jobRoutes);
     app.use("/api/applications", applicationRoutes);
+    app.use("/api/admin", adminRoutes);
 
     connectDB().then(() => {
       app.listen(PORT, () =>

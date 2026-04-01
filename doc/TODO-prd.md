@@ -111,10 +111,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Full platform governance and data visualization.
 
 ### 📦 Module 6.1: Admin Backend & Stats
-- [ ] Implement Admin-only routes for analytics.
-- [ ] Use MongoDB aggregations for dashboard metrics (User growth, Job volume).
-- [ ] Implement Moderation APIs (Ban users, Delete jobs).
-- [ ] [**GIT**] `git commit -m "Implement admin analytics and moderation APIs"`
+- [x] Implement Admin-only routes for analytics.
+- [x] Use MongoDB aggregations for dashboard metrics (User growth, Job volume).
+- [x] Implement Moderation APIs (Ban users, Delete jobs).
+- [x] [**GIT**] `git commit -m "Implement admin analytics and moderation APIs"`
 
 ### 📦 Module 6.2: Admin Dashboard UI
 - [ ] Build Stats Overview with Recharts (Line/Bar charts).

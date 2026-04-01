@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
         enum: ["job-seeker", "recruiter", "admin"],
         default: "job-seeker",
     },
+    isBanned: {
+        type: Boolean,
+        default: false,
+    },
     password: {
         type: String,
         required: [true, "Please add a password"],
