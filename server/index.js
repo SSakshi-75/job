@@ -3,11 +3,14 @@
     import { config } from "dotenv";
     import compression from "compression";
     import cookieParser from "cookie-parser";
-    import Db from "./src/database/Db.js";
+    import connectDB from "./src/config/db.js";
     import cors from "cors";
     import morgan from "morgan";
     import cluster from "cluster";
     import os from "os";
+
+    // Route files
+    import authRoutes from "./src/routes/authRoutes.js";
 
     config();
 
@@ -42,7 +45,10 @@
       res.send("Welcome to Auto Generated Backend!");
     });
 
-    Db().then(() => {
+    // Mount routers
+    app.use("/api/auth", authRoutes);
+
+    connectDB().then(() => {
       app.listen(PORT, () =>
         console.log("🚀 Server running at http://localhost:" + PORT)
       );
