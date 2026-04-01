@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Search, Filter, Loader2, Briefcase } from "lucide-react";
 import { getJobs } from "../../services/jobService";
 import JobCard from "../../components/jobs/JobCard";
+import { JobSkeleton } from "../../components/jobs/JobSkeleton";
 
 const JobListing = () => {
     const [jobs, setJobs] = useState<any[]>([]);
@@ -139,8 +140,15 @@ const JobListing = () => {
                 {/* Job List */}
                 <div className="w-full lg:w-3/4">
                     {loading ? (
-                        <div className="flex items-center justify-center p-20 glass-card">
-                            <Loader2 className="w-10 h-10 text-[var(--accent)] animate-spin" />
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-sm font-medium text-[var(--text-secondary)]">Loading latest opportunities...</span>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
+                                {[...Array(3)].map((_, i) => (
+                                    <JobSkeleton key={i} />
+                                ))}
+                            </div>
                         </div>
                     ) : jobs.length > 0 ? (
                         <div className="space-y-4">

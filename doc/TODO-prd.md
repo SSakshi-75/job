@@ -155,10 +155,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Final optimization and public launch.
 
 ### 📦 Module 9.1: Optimization & Launch
-- [ ] Implement Skeleton Loaders for all main views.
-- [ ] Setup Error Boundaries and Global Error Handling.
-- [ ] Optimize Images & API response times.
-- [ ] Deployment:
-    - [ ] Frontend to Vercel/Netlify.
-    - [ ] Backend to Render/AWS.
-- [ ] [**GIT**] `git commit -m "Final polish, performance optimization, and deployment prep"`
+- [x] Implement Skeleton Loaders for all main views.
+- [x] Setup Error Boundaries and Global Error Handling.
+- [x] Optimize Images & API response times.
+- [x] Deployment:
+    - [x] Frontend to Vercel/Netlify.
+    - [x] Backend to Render/AWS.
+- [x] [**GIT**] `git commit -m "Final polish, performance optimization, and deployment prep"`
