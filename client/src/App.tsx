@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Navbar from "./components/Navbar";
@@ -33,7 +33,6 @@ const Home = () => {
 };
 
 function App() {
-    const { theme } = useSelector((state: any) => state.theme);
     const dispatch = useDispatch();
 
     useEffect(() => {

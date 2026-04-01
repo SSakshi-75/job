@@ -27,6 +27,58 @@ const userSchema = new mongoose.Schema({
         minlength: 6,
         select: false,
     },
+
+    // ── Profile Fields ──
+    phone: {
+        type: String,
+        default: "",
+    },
+    bio: {
+        type: String,
+        default: "",
+        maxlength: 500,
+    },
+    skills: {
+        type: [String],
+        default: [],
+    },
+    profilePicture: {
+        type: String,
+        default: "",
+    },
+    resume: {
+        type: String,
+        default: "",
+    },
+
+    // ── Recruiter-specific ──
+    company: {
+        type: String,
+        default: "",
+    },
+    companyLogo: {
+        type: String,
+        default: "",
+    },
+    companyWebsite: {
+        type: String,
+        default: "",
+    },
+
+    // ── Job Seeker-specific ──
+    experience: {
+        type: String,
+        default: "",
+    },
+    education: {
+        type: String,
+        default: "",
+    },
+    location: {
+        type: String,
+        default: "",
+    },
+
     resetPasswordToken: String,
     resetPasswordExpire: Date,
 }, { timestamps: true });

@@ -11,6 +11,7 @@
 
     // Route files
     import authRoutes from "./src/routes/authRoutes.js";
+    import userRoutes from "./src/routes/userRoutes.js";
 
     config();
 
@@ -41,12 +42,15 @@
     app.use(cookieParser());
     app.use(morgan("dev"));
 
+    app.use(express.static("public"));
+
     app.get("/", (req, res) => {
-      res.send("Welcome to Auto Generated Backend!");
+      res.send("Welcome to Smart Job Portal API!");
     });
 
     // Mount routers
     app.use("/api/auth", authRoutes);
+    app.use("/api/user", userRoutes);
 
     connectDB().then(() => {
       app.listen(PORT, () =>
