@@ -41,9 +41,14 @@ const Navbar = () => {
                         {user ? (
                             <div className="flex items-center gap-4">
                                 {user.role === "recruiter" && (
-                                    <Link to="/post-job" className="btn-primary flex items-center gap-2 py-1.5 px-4 text-sm font-medium">
-                                        <PlusCircle className="w-4 h-4" /> Post a Job
-                                    </Link>
+                                    <div className="flex items-center gap-4">
+                                        <Link to="/my-jobs" className="text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors">
+                                            My Jobs
+                                        </Link>
+                                        <Link to="/post-job" className="btn-primary flex items-center gap-2 py-1.5 px-4 text-sm font-medium">
+                                            <PlusCircle className="w-4 h-4" /> Post a Job
+                                        </Link>
+                                    </div>
                                 )}
                                 
                                 <div className="h-4 w-px bg-[var(--border)] mx-1" />
@@ -98,9 +103,14 @@ const Navbar = () => {
                                         {user.name}
                                     </Link>
                                     {user.role === "recruiter" && (
-                                        <Link to="/post-job" className="btn-primary block text-center" onClick={() => setIsMenuOpen(false)}>
-                                            Post a Job
-                                        </Link>
+                                        <>
+                                            <Link to="/my-jobs" className="block text-center text-[var(--text-primary)] font-semibold pb-2" onClick={() => setIsMenuOpen(false)}>
+                                                My Jobs
+                                            </Link>
+                                            <Link to="/post-job" className="btn-primary block text-center mt-2" onClick={() => setIsMenuOpen(false)}>
+                                                Post a Job
+                                            </Link>
+                                        </>
                                     )}
                                     <button 
                                         onClick={() => { handleLogout(); setIsMenuOpen(false); }}

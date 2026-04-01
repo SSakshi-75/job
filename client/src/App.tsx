@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { setTheme } from "./redux/slices/themeSlice";
 import ProfilePage from "./pages/profile/ProfilePage";
+import PostJob from "./pages/recruiter/PostJob";
+import MyJobs from "./pages/recruiter/MyJobs";
+import Applicants from "./pages/recruiter/Applicants";
 
 const Home = () => {
     return (
@@ -59,6 +62,21 @@ function App() {
                         <Route path="/profile" element={
                             <ProtectedRoute>
                                 <ProfilePage />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/post-job" element={
+                            <ProtectedRoute allowedRoles={['recruiter']}>
+                                <PostJob />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/my-jobs" element={
+                            <ProtectedRoute allowedRoles={['recruiter']}>
+                                <MyJobs />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/jobs/:jobId/applicants" element={
+                            <ProtectedRoute allowedRoles={['recruiter']}>
+                                <Applicants />
                             </ProtectedRoute>
                         } />
                     </Routes>

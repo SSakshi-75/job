@@ -73,19 +73,19 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Empower recruiters to post and manage jobs.
 
 ### 📦 Module 4.1: Job CRUD Backend
-- [ ] Create `Job` model (`server/src/models/Job.js`).
-- [ ] Implement Job Operations:
-    - [ ] `POST /api/jobs` (Create)
-    - [ ] `GET /api/jobs` (List with filters: location, salary, type)
-    - [ ] `PUT /api/jobs/:id` (Update)
-    - [ ] `DELETE /api/jobs/:id` (Delete)
-- [ ] [**GIT**] `git commit -m "Implement job management REST APIs with search filters"`
+- [x] Create `Job` model (`server/src/models/Job.js`).
+- [x] Implement Job Operations:
+    - [x] `POST /api/jobs` (Create)
+    - [x] `GET /api/jobs` (List with filters: location, salary, type)
+    - [x] `PUT /api/jobs/:id` (Update)
+    - [x] `DELETE /api/jobs/:id` (Delete)
+- [x] [**GIT**] `git commit -m "Implement job management REST APIs with search filters"`
 
 ### 📦 Module 4.2: Recruiter Dashboard UI
-- [ ] Build "Post a Job" wizard.
-- [ ] Build "My Jobs" table with status toggles (Active/Closed).
-- [ ] Build "Applicants List" view per job.
-- [ ] [**GIT**] `git commit -m "Complete recruiter job posting and management dashboard"`
+- [x] Build "Post a Job" wizard.
+- [x] Build "My Jobs" table with status toggles (Active/Closed).
+- [x] Build "Applicants List" view per job.
+- [x] [**GIT**] `git commit -m "Complete recruiter job posting and management dashboard"`
 
 ---
 
