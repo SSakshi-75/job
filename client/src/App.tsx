@@ -13,6 +13,7 @@ import Applicants from "./pages/recruiter/Applicants";
 import JobListing from "./pages/jobs/JobListing";
 import JobDetails from "./pages/jobs/JobDetails";
 import AppliedJobs from "./pages/jobs/AppliedJobs";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import About from "./pages/About";
 
 const Home = () => {
@@ -82,6 +83,11 @@ function App() {
                         <Route path="/applications" element={
                             <ProtectedRoute allowedRoles={['job-seeker']}>
                                 <AppliedJobs />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/admin" element={
+                            <ProtectedRoute allowedRoles={['admin']}>
+                                <AdminDashboard />
                             </ProtectedRoute>
                         } />
                         <Route path="/post-job" element={

@@ -50,6 +50,20 @@ const Navbar = () => {
                                         </Link>
                                     </div>
                                 )}
+                                {user.role === "job-seeker" && (
+                                    <div className="flex items-center gap-4">
+                                        <Link to="/applications" className="text-sm font-medium text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors">
+                                            Applied Jobs
+                                        </Link>
+                                    </div>
+                                )}
+                                {user.role === "admin" && (
+                                    <div className="flex items-center gap-4">
+                                        <Link to="/admin" className="text-sm font-bold text-[var(--accent)] hover:text-[var(--text-primary)] transition-colors">
+                                            Admin Panel
+                                        </Link>
+                                    </div>
+                                )}
                                 
                                 <div className="h-4 w-px bg-[var(--border)] mx-1" />
                                 
@@ -111,6 +125,16 @@ const Navbar = () => {
                                                 Post a Job
                                             </Link>
                                         </>
+                                    )}
+                                    {user.role === "job-seeker" && (
+                                        <Link to="/applications" className="block text-center text-[var(--text-primary)] font-semibold pb-2" onClick={() => setIsMenuOpen(false)}>
+                                            Applied Jobs
+                                        </Link>
+                                    )}
+                                    {user.role === "admin" && (
+                                        <Link to="/admin" className="block text-center text-[var(--accent)] font-bold pb-2" onClick={() => setIsMenuOpen(false)}>
+                                            Admin Panel
+                                        </Link>
                                     )}
                                     <button 
                                         onClick={() => { handleLogout(); setIsMenuOpen(false); }}

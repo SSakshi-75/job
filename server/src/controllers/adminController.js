@@ -61,6 +61,32 @@ export const getDashboardStats = async (req, res) => {
     }
 };
 
+// @desc    Get all users
+// @route   GET /api/admin/users
+// @access  Private/Admin
+export const getAllUsersAdmin = async (req, res) => {
+    try {
+        const users = await User.find().sort({ createdAt: -1 }).select("-password");
+        res.status(200).json({ success: true, data: users });
+    } catch (error) {
+        console.error("Error in getAllUsersAdmin:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+// @desc    Get all jobs
+// @route   GET /api/admin/jobs
+// @access  Private/Admin
+export const getAllJobsAdmin = async (req, res) => {
+    try {
+        const jobs = await Job.find().populate("postedBy", "name email").sort({ createdAt: -1 });
+        res.status(200).json({ success: true, data: jobs });
+    } catch (error) {
+        console.error("Error in getAllJobsAdmin:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
 // @desc    Ban or Unban a user
 // @route   PUT /api/admin/users/:id/ban
 // @access  Private/Admin

@@ -117,9 +117,9 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 - [x] [**GIT**] `git commit -m "Implement admin analytics and moderation APIs"`
 
 ### 📦 Module 6.2: Admin Dashboard UI
-- [ ] Build Stats Overview with Recharts (Line/Bar charts).
-- [ ] Build User Management and Job Moderation tables.
-- [ ] [**GIT**] `git commit -m "Complete Admin dashboard UI and data visualization"`
+- [x] Build Stats Overview with Recharts (Line/Bar charts).
+- [x] Build User Management and Job Moderation tables.
+- [x] [**GIT**] `git commit -m "Complete Admin dashboard UI and data visualization"`
 
 ---
 
