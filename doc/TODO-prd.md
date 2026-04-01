@@ -1,0 +1,164 @@
+# 📝 SMART JOB PORTAL - DEVELOPMENT ROADMAP (TODO.prd)
+
+## 📌 Project Overview
+A modern MERN stack job portal with AI-based recommendations, real-time chat, and a premium multi-theme UI (2026 Ready).
+
+---
+
+## 🚀 PHASE 1: Project Foundation & Core Auth
+**Goal:** Setup the base architecture and secure user entry.
+
+### 📦 Module 1.1: Project Initialization
+- [ ] Initialize Git repository.
+- [ ] Setup Backend:
+    - [ ] `npm init -y` in `/server`.
+    - [ ] Install: `express mongoose dotenv cors cookie-parser jsonwebtoken bcryptjs multer socket.io`.
+    - [ ] Create folder structure: `src/{config,controllers,models,routes,middlewares,services,utils,socket}`.
+- [ ] Setup Frontend:
+    - [ ] `npm create vite@latest client -- --template react` in root.
+    - [ ] Install: `tailwindcss postcss autoprefixer lucide-react axios react-router-dom framer-motion @reduxjs/toolkit react-redux`.
+    - [ ] Create folder structure: `src/{components,pages,redux,services,hooks,utils}`.
+- [ ] [**GIT**] `git commit -m "Initialize server and client boilerplate with folder structures"`
+
+### 📦 Module 1.2: Database & Auth Backend
+- [ ] Configure MongoDB connection in `server/src/config/db.js`.
+- [ ] Create `User` model (`server/src/models/User.js`) with roles: `['job-seeker', 'recruiter', 'admin']`.
+- [ ] Implement Auth Controllers (`server/src/controllers/authController.js`):
+    - [ ] Register (Hashing with bcrypt).
+    - [ ] Login (JWT generation & HTTP-only Cookie).
+- [ ] Implement `authMiddleware.js` for JWT verification and role checking.
+- [ ] Define Auth Routes (`server/src/routes/authRoutes.js`).
+- [ ] [**GIT**] `git commit -m "Implement JWT-based Auth backend with role support"`
+
+### 📦 Module 1.3: Frontend Auth Integration
+- [ ] Setup React Router with `ProtectedRoute` component.
+- [ ] Build Login & Register Pages using Tailwind (Dark theme inspired).
+- [ ] Setup Redux slice for Auth state (`client/src/redux/slices/authSlice.js`).
+- [ ] Integrate Axios with interceptors for token handling.
+- [ ] [**GIT**] `git commit -m "Complete frontend auth UI and state management integration"`
+
+---
+
+## 🎨 PHASE 2: Theme Engine & Global UI
+**Goal:** Implement the premium design system and multi-theme switcher.
+
+### 📦 Module 2.1: Theme System Implementation
+- [ ] Define CSS variables in `client/src/index.css` for all 7 themes (Dark, Luxury, Dracula, CMYK, Autumn, Business, Acid).
+- [ ] Create `ThemeContext` or Redux slice for theme management.
+- [ ] Build `ThemeSwitcher` component with live preview bars.
+- [ ] Build `Navbar` with theme toggle and responsive hamburger menu.
+- [ ] [**GIT**] `git commit -m "Implement multi-theme engine and dynamic styling system"`
+
+---
+
+## 👤 PHASE 3: Profile & Media Management
+**Goal:** Enable users and recruiters to build their professional presence.
+
+### 📦 Module 3.1: Profile Backend & Media
+- [ ] Update `User` model for bio, skills, company details, etc.
+- [ ] Setup Cloudinary or local storage for Multer uploads.
+- [ ] Implement `PUT /api/user/profile` for updating details.
+- [ ] Implement `POST /api/user/upload-resume` for PDF handling.
+- [ ] [**GIT**] `git commit -m "Implement profile update APIs and media upload logic"`
+
+### 📦 Module 3.2: Profile UI
+- [ ] Build `ProfilePage` (Conditional rendering for Seeker/Recruiter).
+- [ ] Build `EditProfile` modal/form.
+- [ ] Add Resume previewer and Profile Picture crop/upload UI.
+- [ ] [**GIT**] `git commit -m "Complete user profile management UI"`
+
+---
+
+## 💼 PHASE 4: Job Management (Recruiter Flow)
+**Goal:** Empower recruiters to post and manage jobs.
+
+### 📦 Module 4.1: Job CRUD Backend
+- [ ] Create `Job` model (`server/src/models/Job.js`).
+- [ ] Implement Job Operations:
+    - [ ] `POST /api/jobs` (Create)
+    - [ ] `GET /api/jobs` (List with filters: location, salary, type)
+    - [ ] `PUT /api/jobs/:id` (Update)
+    - [ ] `DELETE /api/jobs/:id` (Delete)
+- [ ] [**GIT**] `git commit -m "Implement job management REST APIs with search filters"`
+
+### 📦 Module 4.2: Recruiter Dashboard UI
+- [ ] Build "Post a Job" wizard.
+- [ ] Build "My Jobs" table with status toggles (Active/Closed).
+- [ ] Build "Applicants List" view per job.
+- [ ] [**GIT**] `git commit -m "Complete recruiter job posting and management dashboard"`
+
+---
+
+## 📥 PHASE 5: Job Discovery & Application (Seeker Flow)
+**Goal:** Streamline the job search and application process.
+
+### 📦 Module 5.1: Job Discovery UI
+- [ ] Build `JobListing` page with Sidebar filters.
+- [ ] Build `JobCard` with glassmorphism and hover animations.
+- [ ] Implement "Search" functionality with debouncing.
+- [ ] Build `JobDetails` view.
+- [ ] [**GIT**] `git commit -m "Complete job discovery UI with advanced filtering"`
+
+### 📦 Module 5.2: Application Workflow
+- [ ] Create `Application` model.
+- [ ] Implement `POST /api/apply/:jobId`.
+- [ ] Implement Seeker Dashboard: "Applied Jobs" with status tracking.
+- [ ] [**GIT**] `git commit -m "Implement application submission and seeker tracking system"`
+
+---
+
+## 👑 PHASE 6: Admin Control Panel
+**Goal:** Full platform governance and data visualization.
+
+### 📦 Module 6.1: Admin Backend & Stats
+- [ ] Implement Admin-only routes for analytics.
+- [ ] Use MongoDB aggregations for dashboard metrics (User growth, Job volume).
+- [ ] Implement Moderation APIs (Ban users, Delete jobs).
+- [ ] [**GIT**] `git commit -m "Implement admin analytics and moderation APIs"`
+
+### 📦 Module 6.2: Admin Dashboard UI
+- [ ] Build Stats Overview with Recharts (Line/Bar charts).
+- [ ] Build User Management and Job Moderation tables.
+- [ ] [**GIT**] `git commit -m "Complete Admin dashboard UI and data visualization"`
+
+---
+
+## 💬 PHASE 7: Real-time Communication
+**Goal:** Enable candidate-recruiter interaction via Socket.io.
+
+### 📦 Module 7.1: Chat Architecture
+- [ ] Integrate Socket.io in `server/src/socket/`.
+- [ ] Create `Message` model.
+- [ ] Implement `GET /api/chats/:receiverId` for history.
+- [ ] [**GIT**] `git commit -m "Setup real-time messaging architecture with Socket.io"`
+
+### 📦 Module 7.2: Chat UI
+- [ ] Build Floating Chat Window or dedicated Messaging page.
+- [ ] Implement real-time status (Online/Typing).
+- [ ] Add Bubble animations and scroll-to-bottom logic.
+- [ ] [**GIT**] `git commit -m "Complete real-time chat interface"`
+
+---
+
+## 🤖 PHASE 8: AI Features (Advanced)
+**Goal:** Implement 2026-level smart features.
+
+### 📦 Module 8.1: Smart AI Services
+- [ ] Build AI Recommendation Service (`server/src/services/aiService.js`).
+- [ ] Implement Skill-Match algorithm (Vector logic or Keyword grouping).
+- [ ] Implement Resume Analyzer feedback system.
+- [ ] [**GIT**] `git commit -m "Integrate AI-driven job recommendations and skill matching"`
+
+---
+
+## 🏁 PHASE 9: Final Polish & Deployment
+**Goal:** Final optimization and public launch.
+
+### 📦 Module 9.1: Optimization & Launch
+- [ ] Implement Skeleton Loaders for all main views.
+- [ ] Setup Error Boundaries and Global Error Handling.
+- [ ] Optimize Images & API response times.
+- [ ] Deployment:
+    - [ ] Frontend to Vercel/Netlify.
+    - [ ] Backend to Render/AWS.
+- [ ] [**GIT**] `git commit -m "Final polish, performance optimization, and deployment prep"`
