@@ -93,11 +93,11 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Streamline the job search and application process.
 
 ### 📦 Module 5.1: Job Discovery UI
-- [ ] Build `JobListing` page with Sidebar filters.
-- [ ] Build `JobCard` with glassmorphism and hover animations.
-- [ ] Implement "Search" functionality with debouncing.
-- [ ] Build `JobDetails` view.
-- [ ] [**GIT**] `git commit -m "Complete job discovery UI with advanced filtering"`
+- [x] Build `JobListing` page with Sidebar filters.
+- [x] Build `JobCard` with glassmorphism and hover animations.
+- [x] Implement "Search" functionality with debouncing.
+- [x] Build `JobDetails` view.
+- [x] [**GIT**] `git commit -m "Complete job discovery UI with advanced filtering"`
 
 ### 📦 Module 5.2: Application Workflow
 - [ ] Create `Application` model.

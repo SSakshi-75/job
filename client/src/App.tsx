@@ -10,6 +10,8 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import PostJob from "./pages/recruiter/PostJob";
 import MyJobs from "./pages/recruiter/MyJobs";
 import Applicants from "./pages/recruiter/Applicants";
+import JobListing from "./pages/jobs/JobListing";
+import JobDetails from "./pages/jobs/JobDetails";
 
 const Home = () => {
     return (
@@ -62,6 +64,16 @@ function App() {
                         <Route path="/profile" element={
                             <ProtectedRoute>
                                 <ProfilePage />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/jobs" element={
+                            <ProtectedRoute>
+                                <JobListing />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/jobs/:id" element={
+                            <ProtectedRoute>
+                                <JobDetails />
                             </ProtectedRoute>
                         } />
                         <Route path="/post-job" element={
