@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Briefcase, LogOut, User, Menu, X, PlusCircle } from "lucide-react";
+import { Briefcase, LogOut, User, Menu, X, PlusCircle, MessageSquare } from "lucide-react";
 import { logout } from "../redux/slices/authSlice";
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -68,6 +68,10 @@ const Navbar = () => {
                                 <div className="h-4 w-px bg-[var(--border)] mx-1" />
                                 
                                 <div className="flex items-center gap-3">
+                                    <Link to="/messages" className="p-2 text-[var(--text-secondary)] hover:text-[var(--accent)] hover:bg-[var(--accent)]/10 rounded-lg transition-all duration-200" title="Messages">
+                                        <MessageSquare className="w-5 h-5" />
+                                    </Link>
+                                    
                                     <Link to="/profile" className="flex items-center gap-2 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors">
                                         <div className="w-8 h-8 rounded-full bg-[var(--accent)]/10 flex items-center justify-center border border-[var(--accent)]/30">
                                             <User className="w-4 h-4 text-[var(--accent)]" />
@@ -136,6 +140,10 @@ const Navbar = () => {
                                             Admin Panel
                                         </Link>
                                     )}
+                                    <Link to="/messages" className="flex items-center gap-3 py-2 text-[var(--text-primary)] font-semibold" onClick={() => setIsMenuOpen(false)}>
+                                        <MessageSquare className="w-5 h-5 text-[var(--accent)]" />
+                                        Messages
+                                    </Link>
                                     <button 
                                         onClick={() => { handleLogout(); setIsMenuOpen(false); }}
                                         className="w-full flex items-center gap-3 py-2 text-red-500 font-semibold"

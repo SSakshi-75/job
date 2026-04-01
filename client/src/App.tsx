@@ -14,6 +14,7 @@ import JobListing from "./pages/jobs/JobListing";
 import JobDetails from "./pages/jobs/JobDetails";
 import AppliedJobs from "./pages/jobs/AppliedJobs";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import MessagesPage from "./pages/messages/MessagesPage";
 import About from "./pages/About";
 
 const Home = () => {
@@ -83,6 +84,11 @@ function App() {
                         <Route path="/applications" element={
                             <ProtectedRoute allowedRoles={['job-seeker']}>
                                 <AppliedJobs />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/messages" element={
+                            <ProtectedRoute>
+                                <MessagesPage />
                             </ProtectedRoute>
                         } />
                         <Route path="/admin" element={

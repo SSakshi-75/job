@@ -133,10 +133,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 - [x] [**GIT**] `git commit -m "Setup real-time messaging architecture with Socket.io"`
 
 ### 📦 Module 7.2: Chat UI
-- [ ] Build Floating Chat Window or dedicated Messaging page.
-- [ ] Implement real-time status (Online/Typing).
-- [ ] Add Bubble animations and scroll-to-bottom logic.
-- [ ] [**GIT**] `git commit -m "Complete real-time chat interface"`
+- [x] Build Floating Chat Window or dedicated Messaging page.
+- [x] Implement real-time status (Online/Typing).
+- [x] Add Bubble animations and scroll-to-bottom logic.
+- [x] [**GIT**] `git commit -m "Complete real-time chat interface"`
 
 ---
 
