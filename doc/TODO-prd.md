@@ -100,10 +100,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 - [x] [**GIT**] `git commit -m "Complete job discovery UI with advanced filtering"`
 
 ### 📦 Module 5.2: Application Workflow
-- [ ] Create `Application` model.
-- [ ] Implement `POST /api/apply/:jobId`.
-- [ ] Implement Seeker Dashboard: "Applied Jobs" with status tracking.
-- [ ] [**GIT**] `git commit -m "Implement application submission and seeker tracking system"`
+- [x] Create `Application` model.
+- [x] Implement `POST /api/apply/:jobId`.
+- [x] Implement Seeker Dashboard: "Applied Jobs" with status tracking.
+- [x] [**GIT**] `git commit -m "Implement application submission and seeker tracking system"`
 
 ---
 

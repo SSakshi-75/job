@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Loader2, Building, MapPin, Clock, DollarSign, Briefcase, ArrowLeft, Send, Users } from "lucide-react";
 import { getJobById } from "../../services/jobService";
+import { applyForJob } from "../../services/applicationService";
 import { useSelector } from "react-redux";
 
 const JobDetails = () => {
@@ -10,7 +11,22 @@ const JobDetails = () => {
     const [job, setJob] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [applying, setApplying] = useState(false);
+    const [applyMessage, setApplyMessage] = useState({ type: "", text: "" });
     const { user } = useSelector((state: any) => state.auth);
+
+    const handleApply = async () => {
+        setApplying(true);
+        setApplyMessage({ type: "", text: "" });
+        try {
+            const res = await applyForJob(id as string);
+            setApplyMessage({ type: "success", text: res.message || "Successfully applied!" });
+        } catch (err: any) {
+            setApplyMessage({ type: "error", text: err.response?.data?.message || "Failed to apply." });
+        } finally {
+            setApplying(false);
+        }
+    };
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -83,9 +99,20 @@ const JobDetails = () => {
 
                     <div className="flex flex-col items-center gap-3">
                         {user?.role === "job-seeker" ? (
-                            <button className="btn-primary py-3 px-8 text-lg font-bold shadow-lg shadow-[var(--accent)]/20 flex items-center gap-2 w-full md:w-auto justify-center">
-                                <Send className="w-5 h-5" /> Apply Now
-                            </button>
+                            <div className="flex flex-col items-center gap-2">
+                                <button 
+                                    onClick={handleApply}
+                                    disabled={applying}
+                                    className="btn-primary py-3 px-8 text-lg font-bold shadow-lg shadow-[var(--accent)]/20 flex items-center gap-2 w-full md:w-auto justify-center"
+                                >
+                                    {applying ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Send className="w-5 h-5" /> Apply Now</>}
+                                </button>
+                                {applyMessage.text && (
+                                    <span className={`text-sm font-bold ${applyMessage.type === "success" ? "text-green-400" : "text-red-400"}`}>
+                                        {applyMessage.text}
+                                    </span>
+                                )}
+                            </div>
                         ) : user?.role === "recruiter" && user._id === job.postedBy ? (
                             <Link to={`/jobs/${job._id}/applicants`} className="btn-primary py-3 px-8 text-lg font-bold flex items-center gap-2 w-full md:w-auto justify-center bg-transparent border border-[var(--accent)] text-[var(--text-primary)] hover:bg-[var(--accent)]/10">
                                 <Users className="w-5 h-5" /> View Applicants
