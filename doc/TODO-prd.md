@@ -144,10 +144,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Implement 2026-level smart features.
 
 ### 📦 Module 8.1: Smart AI Services
-- [ ] Build AI Recommendation Service (`server/src/services/aiService.js`).
-- [ ] Implement Skill-Match algorithm (Vector logic or Keyword grouping).
-- [ ] Implement Resume Analyzer feedback system.
-- [ ] [**GIT**] `git commit -m "Integrate AI-driven job recommendations and skill matching"`
+- [x] Build AI Recommendation Service (`server/src/services/aiService.js`).
+- [x] Implement Skill-Match algorithm (Vector logic or Keyword grouping).
+- [x] Implement Resume Analyzer feedback system.
+- [x] [**GIT**] `git commit -m "Integrate AI-driven job recommendations and skill matching"`
 
 ---
 

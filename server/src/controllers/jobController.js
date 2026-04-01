@@ -1,5 +1,6 @@
 import Job from "../models/Job.js";
 import User from "../models/User.js";
+import { getJobRecommendations, analyzeResume } from "../services/aiService.js";
 
 // @desc    Create a new job
 // @route   POST /api/jobs
@@ -159,6 +160,50 @@ export const deleteJob = async (req, res) => {
         await job.deleteOne();
 
         res.status(200).json({ success: true, message: "Job deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Get AI recommended jobs
+// @route   GET /api/jobs/ai/recommendations
+// @access  Private (Job Seeker)
+export const getAIRecommendedJobs = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const allJobs = await Job.find({ status: "active" }).populate("recruiter", "name email company");
+        
+        const recommendations = getJobRecommendations(user, allJobs);
+
+        res.status(200).json({
+            success: true,
+            count: recommendations.length,
+            data: recommendations
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Analyze match for a specific job
+// @route   GET /api/jobs/:id/ai/analyze
+// @access  Private (Job Seeker)
+export const analyzeSpecificJobMatch = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const job = await Job.findById(req.params.id);
+
+        if (!job) {
+            return res.status(404).json({ success: false, message: "Job not found" });
+        }
+
+        const userSkills = user.profile?.skills || user.skills || [];
+        const analysis = analyzeResume(userSkills, job.title, job.skills);
+
+        res.status(200).json({
+            success: true,
+            data: analysis
+        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

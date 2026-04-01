@@ -6,6 +6,8 @@ import {
     getMyJobs,
     updateJob,
     deleteJob,
+    getAIRecommendedJobs,
+    analyzeSpecificJobMatch
 } from "../controllers/jobController.js";
 import { protect, authorize } from "../middlewares/authMiddleware.js";
 
@@ -13,6 +15,11 @@ const router = express.Router();
 
 // Public routes
 router.get("/", getJobs);
+
+// AI Services
+router.get("/ai/recommendations", protect, authorize("job-seeker"), getAIRecommendedJobs);
+router.get("/:id/ai/analyze", protect, authorize("job-seeker"), analyzeSpecificJobMatch);
+
 router.get("/:id", getJob);
 
 // Private - Recruiter only
