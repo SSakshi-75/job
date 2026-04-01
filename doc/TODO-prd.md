@@ -127,10 +127,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Enable candidate-recruiter interaction via Socket.io.
 
 ### 📦 Module 7.1: Chat Architecture
-- [ ] Integrate Socket.io in `server/src/socket/`.
-- [ ] Create `Message` model.
-- [ ] Implement `GET /api/chats/:receiverId` for history.
-- [ ] [**GIT**] `git commit -m "Setup real-time messaging architecture with Socket.io"`
+- [x] Integrate Socket.io in `server/src/socket/`.
+- [x] Create `Message` model.
+- [x] Implement `GET /api/chats/:receiverId` for history.
+- [x] [**GIT**] `git commit -m "Setup real-time messaging architecture with Socket.io"`
 
 ### 📦 Module 7.2: Chat UI
 - [ ] Build Floating Chat Window or dedicated Messaging page.

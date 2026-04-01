@@ -8,6 +8,7 @@
     import morgan from "morgan";
     import cluster from "cluster";
     import os from "os";
+    import { createServer } from "http";
 
     // Route files
     import authRoutes from "./src/routes/authRoutes.js";
@@ -15,6 +16,8 @@
     import jobRoutes from "./src/routes/jobRoutes.js";
     import applicationRoutes from "./src/routes/applicationRoutes.js";
     import adminRoutes from "./src/routes/adminRoutes.js";
+    import chatRoutes from "./src/routes/chatRoutes.js";
+    import { initSocket } from "./src/socket/index.js";
 
     config();
 
@@ -36,6 +39,9 @@
     } else {
 
     const app = express();
+    const httpServer = createServer(app);
+    const io = initSocket(httpServer);
+    app.set('io', io);
 
     app.use(cors({ origin: "http://localhost:5173", credentials: true }));
     
@@ -57,9 +63,10 @@
     app.use("/api/jobs", jobRoutes);
     app.use("/api/applications", applicationRoutes);
     app.use("/api/admin", adminRoutes);
+    app.use("/api/chats", chatRoutes);
 
     connectDB().then(() => {
-      app.listen(PORT, () =>
+      httpServer.listen(PORT, () =>
         console.log("🚀 Server running at http://localhost:" + PORT)
       );
     });
