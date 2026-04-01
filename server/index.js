@@ -12,6 +12,7 @@
     // Route files
     import authRoutes from "./src/routes/authRoutes.js";
     import userRoutes from "./src/routes/userRoutes.js";
+    import jobRoutes from "./src/routes/jobRoutes.js";
 
     config();
 
@@ -51,6 +52,7 @@
     // Mount routers
     app.use("/api/auth", authRoutes);
     app.use("/api/user", userRoutes);
+    app.use("/api/jobs", jobRoutes);
 
     connectDB().then(() => {
       app.listen(PORT, () =>

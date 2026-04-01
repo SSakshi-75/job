@@ -62,10 +62,10 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 - [x] [**GIT**] `git commit -m "Implement profile update APIs and media upload logic"`
 
 ### 📦 Module 3.2: Profile UI
-- [ ] Build `ProfilePage` (Conditional rendering for Seeker/Recruiter).
-- [ ] Build `EditProfile` modal/form.
-- [ ] Add Resume previewer and Profile Picture crop/upload UI.
-- [ ] [**GIT**] `git commit -m "Complete user profile management UI"`
+- [x] Build `ProfilePage` (Conditional rendering for Seeker/Recruiter).
+- [x] Build `EditProfile` modal/form.
+- [x] Add Resume previewer and Profile Picture crop/upload UI.
+- [x] [**GIT**] `git commit -m "Complete user profile management UI"`
 
 ---
 
