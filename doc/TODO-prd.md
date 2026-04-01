@@ -31,11 +31,11 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 - [x] [**GIT**] `git commit -m "Implement JWT-based Auth backend with role support"`
 
 ### 📦 Module 1.3: Frontend Auth Integration
-- [ ] Setup React Router with `ProtectedRoute` component.
-- [ ] Build Login & Register Pages using Tailwind (Dark theme inspired).
-- [ ] Setup Redux slice for Auth state (`client/src/redux/slices/authSlice.js`).
-- [ ] Integrate Axios with interceptors for token handling.
-- [ ] [**GIT**] `git commit -m "Complete frontend auth UI and state management integration"`
+- [x] Setup React Router with `ProtectedRoute` component.
+- [x] Build Login & Register Pages using Tailwind (Dark theme inspired).
+- [x] Setup Redux slice for Auth state (`client/src/redux/slices/authSlice.js`).
+- [x] Integrate Axios with interceptors for token handling.
+- [x] [**GIT**] `git commit -m "Complete frontend auth UI and state management integration"`
 
 ---
 
