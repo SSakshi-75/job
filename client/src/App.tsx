@@ -6,6 +6,7 @@ import Register from "./pages/auth/Register";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { setTheme } from "./redux/slices/themeSlice";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 const Home = () => {
     return (
@@ -53,6 +54,11 @@ function App() {
                         <Route path="/" element={
                             <ProtectedRoute>
                                 <Home />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/profile" element={
+                            <ProtectedRoute>
+                                <ProfilePage />
                             </ProtectedRoute>
                         } />
                     </Routes>

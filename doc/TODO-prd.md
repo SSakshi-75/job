@@ -55,11 +55,11 @@ A modern MERN stack job portal with AI-based recommendations, real-time chat, an
 **Goal:** Enable users and recruiters to build their professional presence.
 
 ### 📦 Module 3.1: Profile Backend & Media
-- [ ] Update `User` model for bio, skills, company details, etc.
-- [ ] Setup Cloudinary or local storage for Multer uploads.
-- [ ] Implement `PUT /api/user/profile` for updating details.
-- [ ] Implement `POST /api/user/upload-resume` for PDF handling.
-- [ ] [**GIT**] `git commit -m "Implement profile update APIs and media upload logic"`
+- [x] Update `User` model for bio, skills, company details, etc.
+- [x] Setup Cloudinary or local storage for Multer uploads.
+- [x] Implement `PUT /api/user/profile` for updating details.
+- [x] Implement `POST /api/user/upload-resume` for PDF handling.
+- [x] [**GIT**] `git commit -m "Implement profile update APIs and media upload logic"`
 
 ### 📦 Module 3.2: Profile UI
 - [ ] Build `ProfilePage` (Conditional rendering for Seeker/Recruiter).
