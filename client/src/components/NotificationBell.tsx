@@ -47,7 +47,7 @@ const NotificationBell = () => {
         if (n.type === 'application' && n.job) {
             const jobId = typeof n.job === 'object' ? n.job._id : n.job;
             navigate(`/jobs/${jobId}/applicants`);
-        } else if (n.type === 'message' || n.type === 'interview') {
+        } else if (n.type === 'interview') {
             navigate('/interviews');
         } else if (n.type === 'status_change' && n.job) {
             const jobId = typeof n.job === 'object' ? n.job._id : n.job;
@@ -93,7 +93,7 @@ const NotificationBell = () => {
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                                             n.type === 'application' ? 'bg-emerald-50 text-emerald-600' :
                                             n.type === 'status_change' ? 'bg-blue-50 text-blue-600' :
-                                            n.type === 'message' || n.type === 'interview' ? 'bg-indigo-50 text-indigo-600' :
+                                            n.type === 'interview' ? 'bg-indigo-50 text-indigo-600' :
                                             'bg-slate-50 text-slate-600'
                                         }`}>
                                             {n.type === 'application' ? <Briefcase className="w-5 h-5" /> :

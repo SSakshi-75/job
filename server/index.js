@@ -11,7 +11,6 @@ import userRoutes from "./src/routes/userRoutes.js";
 import jobRoutes from "./src/routes/jobRoutes.js";
 import applicationRoutes from "./src/routes/applicationRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
-import chatRoutes from "./src/routes/chatRoutes.js";
 import companyRoutes from "./src/routes/companyRoutes.js";
 import interviewRoutes from "./src/routes/interviewRoutes.js";
 
@@ -47,7 +46,6 @@ app.use("/api/user", userRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/chats", chatRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/interviews", interviewRoutes);
 

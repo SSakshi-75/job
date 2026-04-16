@@ -14,7 +14,7 @@ const notificationSchema = new mongoose.Schema(
         },
         type: {
             type: String,
-            enum: ["application", "status_change", "message"],
+            enum: ["application", "status_change"],
             required: true,
         },
         content: {
