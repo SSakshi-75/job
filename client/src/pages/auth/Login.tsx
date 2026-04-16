@@ -26,7 +26,17 @@ const Login = () => {
                 localStorage.setItem("token", res.data.token);
                 // For simplicity, let's assume register/login returns at least a partial user obj or we call /me
                 const userRes = await api.get("/auth/me");
-                dispatch(setUser(userRes.data.data));
+                const user = userRes.data.data;
+                
+                // Verify if the user is a job seeker
+                if (user.role !== "job-seeker") {
+                    localStorage.removeItem("token");
+                    dispatch(setError("Access Denied: This portal is for Candidates. Please use the Employer Portal."));
+                    dispatch(setLoading(false));
+                    return;
+                }
+
+                dispatch(setUser(user));
                 navigate("/");
             }
         } catch (err) {
@@ -39,12 +49,12 @@ const Login = () => {
             <div className="max-w-sm w-full space-y-8 glass-card shadow-2xl">
                 <div className="text-center">
                     <div className="flex justify-center mb-4">
-                        <div className="bg-blue-600/20 p-3 rounded-2xl">
-                            <LogIn className="w-10 h-10 text-blue-500" />
+                        <div className="bg-blue-100 p-3 rounded-2xl">
+                            <LogIn className="w-10 h-10 text-blue-600" />
                         </div>
                     </div>
-                    <h2 className="text-3xl font-extrabold text-white tracking-tight">Welcome Back</h2>
-                    <p className="mt-2 text-[#9CA3AF]">Log in to your account to continue</p>
+                    <h2 className="text-3xl font-black text-slate-900 tracking-tight">Candidate Login</h2>
+                    <p className="mt-2 text-slate-500 font-medium">Log in to search and apply for jobs</p>
                 </div>
 
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -99,10 +109,16 @@ const Login = () => {
                     </button>
                     
                     <div className="text-center mt-4">
-                        <p className="text-[#9CA3AF] text-sm">
+                        <p className="text-slate-500 text-sm font-medium">
                             Don't have an account?{" "}
-                            <Link to="/register" className="text-blue-500 hover:text-blue-400 font-medium transition-colors">
+                            <Link to="/register" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
                                 Sign up
+                            </Link>
+                        </p>
+                        <p className="text-slate-500 text-xs font-medium mt-4">
+                            Are you an employer?{" "}
+                            <Link to="/recruiter/login" className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors">
+                                Employer Login
                             </Link>
                         </p>
                     </div>

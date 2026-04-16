@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { UserPlus, Mail, Lock, User, Briefcase, Loader2 } from "lucide-react";
+import { UserPlus, Mail, Lock, User, Loader2 } from "lucide-react";
 import { setLoading, setUser, setError } from "../../redux/slices/authSlice.js";
 import api from "../../services/api.js";
 
@@ -43,12 +43,12 @@ const Register = () => {
             <div className="max-w-sm w-full space-y-6 glass-card shadow-2xl">
                 <div className="text-center">
                     <div className="flex justify-center mb-4">
-                        <div className="bg-blue-600/20 p-3 rounded-2xl">
-                            <UserPlus className="w-10 h-10 text-blue-500" />
+                        <div className="bg-blue-100 p-3 rounded-2xl">
+                            <UserPlus className="w-10 h-10 text-blue-600" />
                         </div>
                     </div>
-                    <h2 className="text-3xl font-extrabold text-white tracking-tight">Create Account</h2>
-                    <p className="mt-2 text-[#9CA3AF]">Join our community today</p>
+                    <h2 className="text-3xl font-black text-slate-900 tracking-tight">Candidate Signup</h2>
+                    <p className="mt-2 text-slate-500 font-medium">Join our community to find your dream job</p>
                 </div>
 
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -97,21 +97,6 @@ const Register = () => {
                                 onChange={handleChange}
                             />
                         </div>
-
-                        <div className="relative group">
-                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none group-focus-within:text-blue-500">
-                                <Briefcase className="w-5 h-5 text-[#9CA3AF]" />
-                            </div>
-                            <select
-                                name="role"
-                                className="input-field pl-10 appearance-none"
-                                value={formData.role}
-                                onChange={handleChange}
-                            >
-                                <option value="job-seeker">Job Seeker</option>
-                                <option value="recruiter">Recruiter</option>
-                            </select>
-                        </div>
                     </div>
 
                     {error && (
@@ -133,10 +118,16 @@ const Register = () => {
                     </button>
                     
                     <div className="text-center mt-4">
-                        <p className="text-[#9CA3AF] text-sm">
+                        <p className="text-slate-500 text-sm font-medium">
                             Already have an account?{" "}
-                            <Link to="/login" className="text-blue-500 hover:text-blue-400 font-medium transition-colors">
+                            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-bold transition-colors">
                                 Log in
+                            </Link>
+                        </p>
+                        <p className="text-slate-500 text-xs font-medium mt-4">
+                            Are you an employer?{" "}
+                            <Link to="/recruiter/register" className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors">
+                                Go to Employer Setup
                             </Link>
                         </p>
                     </div>

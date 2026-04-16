@@ -7,11 +7,11 @@ import { getJobRecommendations, analyzeResume } from "../services/aiService.js";
 // @access  Private (Recruiter only)
 export const createJob = async (req, res) => {
     try {
-        const recruiter = await User.findById(req.user.id);
+        const recruiter = await User.findById(req.user._id);
 
         const job = await Job.create({
             ...req.body,
-            recruiter: req.user.id,
+            recruiter: req.user._id,
             company: req.body.company || recruiter.company || "Unknown Company",
             companyLogo: recruiter.companyLogo || "",
         });
@@ -72,13 +72,35 @@ export const getJobs = async (req, res) => {
             Job.countDocuments(query),
         ]);
 
+        // Force Logo Fallback for Top Brands on every request
+        const topBrandLogos = {
+            "Google": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.png",
+            "Microsoft": "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+            "Tesla": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
+            "Netflix": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+            "Spotify": "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_with_text.svg",
+            "Sportify": "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_with_text.svg", // Handle typo
+            "SpaceX": "https://upload.wikimedia.org/wikipedia/commons/3/36/SpaceX-Logo.svg",
+            "Cloud Solutions": "https://cdn-icons-png.flaticon.com/512/5968/5968267.png",
+            "Creative Studio": "https://cdn-icons-png.flaticon.com/512/3659/3659030.png",
+            "StartUp Inc": "https://cdn-icons-png.flaticon.com/512/261/261768.png"
+        };
+
+        const enrichedJobs = jobs.map(job => {
+            const jobObj = job.toObject();
+            return {
+                ...jobObj,
+                companyLogo: jobObj.companyLogo || topBrandLogos[jobObj.company] || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            };
+        });
+
         res.status(200).json({
             success: true,
             count: jobs.length,
             total,
             totalPages: Math.ceil(total / Number(limit)),
             currentPage: Number(page),
-            data: jobs,
+            data: enrichedJobs,
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -107,7 +129,7 @@ export const getJob = async (req, res) => {
 // @access  Private (Recruiter)
 export const getMyJobs = async (req, res) => {
     try {
-        const jobs = await Job.find({ recruiter: req.user.id }).sort({ createdAt: -1 });
+        const jobs = await Job.find({ recruiter: req.user._id }).sort({ createdAt: -1 });
         res.status(200).json({ success: true, count: jobs.length, data: jobs });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -185,6 +207,11 @@ export const getAIRecommendedJobs = async (req, res) => {
     }
 };
 
+import fs from "fs";
+import path from "path";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
 // @desc    Analyze match for a specific job
 // @route   GET /api/jobs/:id/ai/analyze
 // @access  Private (Job Seeker)
@@ -197,7 +224,38 @@ export const analyzeSpecificJobMatch = async (req, res) => {
             return res.status(404).json({ success: false, message: "Job not found" });
         }
 
-        const userSkills = user.profile?.skills || user.skills || [];
+        let userSkills = user.profile?.skills || user.skills || [];
+        
+        // Extract skills from resume context dynamically
+        if (user.resume) {
+            const { PDFParse } = require("pdf-parse");
+            const relativePath = user.resume.startsWith("/") ? user.resume.substring(1) : user.resume;
+            const fullPath = path.join(process.cwd(), "public", relativePath);
+            
+            if (fs.existsSync(fullPath)) {
+                try {
+                    const dataBuffer = fs.readFileSync(fullPath);
+                    const parser = new PDFParse({ data: dataBuffer });
+                    const pdfData = await parser.getText();
+                    const resumeText = pdfData.text || "";
+                    await parser.destroy();
+                    
+                    // Simple extraction of job skills found in resume
+                    if (job.skills && Array.isArray(job.skills)) {
+                        job.skills.forEach(skill => {
+                            const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\\\$&');
+                            const regex = new RegExp(`(^|\\W)(${escapedSkill})(\\W|$)`, 'i');
+                            if (regex.test(resumeText) && !userSkills.includes(skill)) {
+                                userSkills.push(skill);
+                            }
+                        });
+                    }
+                } catch (err) {
+                    console.error("PDF parse error in job match:", err);
+                }
+            }
+        }
+
         const analysis = analyzeResume(userSkills, job.title, job.skills);
 
         res.status(200).json({

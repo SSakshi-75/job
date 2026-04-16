@@ -35,3 +35,9 @@ export const deleteJob = async (id: string) => {
     const res = await api.delete(`/jobs/${id}`);
     return res.data;
 };
+
+// AI Analysis for a specific job
+export const getJobAIAnalysis = async (id: string) => {
+    const res = await api.get(`/jobs/${id}/ai/analyze`);
+    return res.data.data;
+};

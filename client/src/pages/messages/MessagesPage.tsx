@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import { Send, User as UserIcon, Loader2, ArrowLeft, MessageSquare } from "lucide-react";
+import { Send, User as UserIcon, Loader2, ArrowLeft, MessageSquare, CheckCircle2 } from "lucide-react";
 import { getConversationsList, getChatHistory } from "../../services/chatService";
 
 const MessagesPage = () => {
@@ -30,7 +30,10 @@ const MessagesPage = () => {
     useEffect(() => {
         if (!user) return;
         
-        const newSocket = io("http://localhost:5000");
+        const newSocket = io("http://localhost:5000", {
+            transports: ["websocket"],
+            upgrade: false
+        });
         setSocket(newSocket);
 
         newSocket.on("connect", () => {
@@ -55,8 +58,19 @@ const MessagesPage = () => {
         });
 
         newSocket.on("message_sent_success", (savedMessage: any) => {
-            // Optimistically we might have pushed a temp message, or we just push the DB version here
-            setMessages((prev) => [...prev, savedMessage]);
+            // Check if message already exists (already received via receive_message if we are both in the room)
+            setMessages((prev) => {
+                const existing = prev.find(m => m._id === savedMessage._id);
+                if (existing) return prev;
+                return [...prev, savedMessage];
+            });
+        });
+
+        newSocket.on("messages_read_update", ({ readerId }: { readerId: string }) => {
+            // If the guy I'm chatting with just read my messages
+            setMessages(prev => prev.map(m => 
+                (m.sender === user._id && m.receiver === readerId) ? { ...m, read: true } : m
+            ));
         });
 
         return () => {
@@ -123,15 +137,30 @@ const MessagesPage = () => {
         e.preventDefault();
         if (!messageInput.trim() || !selectedUser || !socket) return;
 
-        // Emit to socket (the socket logic will hit the DB and emit "message_sent_success" back to us)
+        // Emit to socket
         socket.emit("send_message", {
             senderId: user._id,
             receiverId: selectedUser._id,
             content: messageInput.trim()
         });
 
+        // UI logic: Optionally could add a local "pending" message here
         setMessageInput("");
     };
+
+    // Mark as read when selectedUser changes or new messages arrive
+    useEffect(() => {
+        if (socket && selectedUser && user && messages.length > 0) {
+            const hasUnread = messages.some(m => m.sender === selectedUser._id && m.receiver === user._id && !m.read);
+            if (hasUnread) {
+                socket.emit("mark_read", { userId: user._id, selectedUserId: selectedUser._id });
+                // Locally update to avoid waiting for roundtrip if redundant
+                setMessages(prev => prev.map(m => 
+                    (m.sender === selectedUser._id && m.receiver === user._id) ? { ...m, read: true } : m
+                ));
+            }
+        }
+    }, [socket, selectedUser, user, messages.length]);
 
     // Auto resize text area logic could go here if using textarea, but using input for simplicity
 
@@ -158,9 +187,9 @@ const MessagesPage = () => {
                 )}
 
                 {/* Sidebar - Conversations List */}
-                <div className={`w-full md:w-1/3 lg:w-1/4 border-r border-[var(--border)] bg-[var(--bg-main)]/30 flex flex-col ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
-                    <div className="p-4 border-b border-[var(--border)]">
-                        <h2 className="text-xl font-extrabold text-[var(--text-primary)]">Messages</h2>
+                <div className={`w-full md:w-1/3 lg:w-1/4 border-r border-[var(--border)] bg-(--bg-secondary) flex flex-col ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
+                    <div className="p-5 border-b border-[var(--border)] bg-(--bg-main)">
+                        <h2 className="text-xl font-black text-(--text-primary)">Messages</h2>
                     </div>
                     
                     <div className="overflow-y-auto flex-grow h-0 custom-scrollbar">
@@ -181,7 +210,7 @@ const MessagesPage = () => {
                                         <div className="relative">
                                             <div className="w-12 h-12 rounded-full bg-[var(--bg-card)] border border-[var(--border)] flex items-center justify-center flex-shrink-0 text-[var(--text-secondary)] overflow-hidden">
                                                 {c.profilePicture ? (
-                                                    <img src={c.profilePicture} alt={c.name} className="w-full h-full object-cover" />
+                                                    <img src={`http://localhost:5000${c.profilePicture}`} alt={c.name} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <UserIcon className="w-6 h-6" />
                                                 )}
@@ -208,9 +237,11 @@ const MessagesPage = () => {
                             {/* Chat Header */}
                             <div className="h-16 px-6 border-b border-[var(--border)] flex items-center bg-[var(--bg-main)]/50 backdrop-blur-md shrink-0 md:pl-6 pl-16">
                                 <div className="flex items-center gap-3">
-                                    <h3 className="text-lg font-extrabold text-[var(--text-primary)]">{selectedUser.name}</h3>
+                                    <h3 className="text-lg font-black text-(--text-primary)">{selectedUser.name}</h3>
                                     {onlineUsers.includes(selectedUser._id) ? (
-                                        <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-xs font-bold uppercase tracking-wide">Online</span>
+                                        <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[10px] font-black uppercase tracking-wider">
+                                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> Online
+                                        </span>
                                     ) : (
                                         <span className="px-2 py-0.5 rounded-full bg-[var(--text-secondary)]/10 text-[var(--text-secondary)] text-xs font-bold uppercase tracking-wide">Offline</span>
                                     )}
@@ -243,9 +274,23 @@ const MessagesPage = () => {
                                                     }`}
                                                 >
                                                     <p className="whitespace-pre-wrap">{msg.content}</p>
-                                                    <span className={`text-[10px] mt-1 block font-medium ${isMe ? 'text-white/70' : 'text-[var(--text-secondary)]'}`}>
-                                                        {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now"}
-                                                    </span>
+                                                    <div className="flex items-center justify-between gap-2 mt-1">
+                                                        <span className={`text-[10px] block font-medium ${isMe ? 'text-white/70' : 'text-[var(--text-secondary)]'}`}>
+                                                            {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Just now"}
+                                                        </span>
+                                                        {isMe && (
+                                                            <div className="flex items-center">
+                                                                {msg.read ? (
+                                                                    <div className="flex -space-x-1">
+                                                                        <CheckCircle2 className="w-3 h-3 text-cyan-300" />
+                                                                        <CheckCircle2 className="w-3 h-3 text-cyan-300" />
+                                                                    </div>
+                                                                ) : (
+                                                                    <CheckCircle2 className="w-3 h-3 text-white/50" />
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         );

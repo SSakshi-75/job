@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     User, Briefcase, MapPin, BookOpen, Wrench, Mail,
-    Phone, Upload, FileText, Edit3, Loader2, ExternalLink, CheckCircle
+    Phone, Upload, FileText, Edit3, Loader2, ExternalLink, CheckCircle, XCircle
 } from "lucide-react";
 import { setUser } from "../../redux/slices/authSlice";
 import { fetchProfile, uploadProfilePicture, uploadResume } from "../../services/profileService";
@@ -17,6 +17,7 @@ const ProfilePage = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [uploading, setUploading] = useState({ pic: false, resume: false });
     const [uploadSuccess, setUploadSuccess] = useState({ pic: false, resume: false });
+    const [resumeError, setResumeError] = useState<string>("");
 
     const picInputRef = useRef<HTMLInputElement>(null);
     const resumeInputRef = useRef<HTMLInputElement>(null);
@@ -52,19 +53,37 @@ const ProfilePage = () => {
     const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+
+        // Immediate Rejection logic
+        if (file.type !== "application/pdf") {
+            setResumeError("Upload Rejected: Expected a PDF file but received another format.");
+            e.target.value = ""; // Clear the input
+            setTimeout(() => setResumeError(""), 5000); // Clear error after 5s
+            return;
+        }
+
+        setResumeError("");
         setUploading(prev => ({ ...prev, resume: true }));
         try {
             const data = await uploadResume(file);
             setProfile((prev: any) => ({ ...prev, resume: data.filePath }));
+            // Also update Redux state so AI Resume Analyzer and other pages see the change
+            dispatch(setUser({ ...user, resume: data.filePath }));
             setUploadSuccess(prev => ({ ...prev, resume: true }));
             setTimeout(() => setUploadSuccess(prev => ({ ...prev, resume: false })), 3000);
-        } catch (err) { console.error(err); }
+        } catch (err: any) {
+            console.error(err);
+            const msg = err.response?.data?.message || "Resume upload failed. Please ensure the file is an actual PDF.";
+            setResumeError(msg);
+            setTimeout(() => setResumeError(""), 5000);
+        }
         finally { setUploading(prev => ({ ...prev, resume: false })); }
     };
 
     const handleProfileSave = (updatedUser: any) => {
         setProfile(updatedUser);
-        dispatch(setUser({ ...user, name: updatedUser.name }));
+        // Correctly update Redux state with the new user object
+        dispatch(setUser(updatedUser));
         setShowEditModal(false);
     };
 
@@ -86,7 +105,7 @@ const ProfilePage = () => {
         <div className="max-w-5xl mx-auto px-4 py-10">
             {/* Hidden file inputs */}
             <input ref={picInputRef} type="file" accept="image/*" className="hidden" onChange={handleProfilePicUpload} />
-            <input ref={resumeInputRef} type="file" accept=".pdf" className="hidden" onChange={handleResumeUpload} />
+            <input ref={resumeInputRef} type="file" accept="application/pdf" className="hidden" onChange={handleResumeUpload} />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -221,6 +240,11 @@ const ProfilePage = () => {
                                 {uploadSuccess.resume && (
                                     <div className="flex items-center gap-1 text-green-400 text-xs font-medium">
                                         <CheckCircle className="w-4 h-4" /> Resume updated!
+                                    </div>
+                                )}
+                                {resumeError && (
+                                    <div className="flex items-center gap-2 text-red-500 text-xs font-bold bg-red-500/10 p-3 rounded-xl border border-red-500/20 animate-in fade-in zoom-in-95">
+                                        <XCircle className="w-4 h-4" /> {resumeError}
                                     </div>
                                 )}
                                 <button

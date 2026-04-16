@@ -54,6 +54,26 @@ export const initSocket = (server) => {
             }
         });
 
+        // Mark messages as read
+        socket.on("mark_read", async (data) => {
+            const { userId, selectedUserId } = data;
+            try {
+                // Update all messages where current user is receiver and selected user is sender
+                await Message.updateMany(
+                    { receiver: userId, sender: selectedUserId, read: false },
+                    { read: true }
+                );
+                
+                // Notify the sender that their messages were read
+                const senderSocketId = connectedUsers.get(selectedUserId);
+                if (senderSocketId) {
+                    io.to(senderSocketId).emit("messages_read_update", { readerId: userId });
+                }
+            } catch (error) {
+                console.error("Error marking read:", error);
+            }
+        });
+
         // Handle disconnect cleanup
         socket.on("disconnect", () => {
             let disconnectedUserId = null;

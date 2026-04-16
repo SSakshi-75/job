@@ -54,7 +54,7 @@ const PostJob = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto px-4 py-10">
+        <div className="max-w-3xl mx-auto px-4 py-6 md:py-10">
             <div className="glass-card">
                 <div className="flex items-center gap-3 mb-8">
                     <div className="bg-[var(--accent)]/10 p-2.5 rounded-xl">
@@ -154,7 +154,7 @@ const PostJob = () => {
                     </div>
 
                     {/* Openings */}
-                    <div className="w-1/2">
+                    <div className="w-full sm:w-1/2">
                         <label className="block text-xs font-bold uppercase tracking-widest text-[var(--accent)] mb-2">No. of Openings</label>
                         <input name="openings" type="number" min="1" value={form.openings} onChange={handleChange} className="input-field" />
                     </div>

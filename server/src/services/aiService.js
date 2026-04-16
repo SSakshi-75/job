@@ -5,8 +5,8 @@
  * Returns a score from 0 to 100.
  */
 export const calculateSkillMatch = (userSkills = [], jobSkills = []) => {
-    if (!jobSkills || jobSkills.length === 0) return 100; // If job has no requirements, it's a 100% match functionally.
-    if (!userSkills || userSkills.length === 0) return 0;
+    if (!jobSkills || jobSkills.length === 0) return { matchPercentage: 100, missingSkills: [] };
+    if (!userSkills || userSkills.length === 0) return { matchPercentage: 0, missingSkills: jobSkills || [] };
 
     const normalizedUserSkills = userSkills.map(s => s.toLowerCase().trim());
     const normalizedJobSkills = jobSkills.map(s => s.toLowerCase().trim());
@@ -16,10 +16,14 @@ export const calculateSkillMatch = (userSkills = [], jobSkills = []) => {
     const missingSkills = [];
 
     normalizedJobSkills.forEach(skill => {
-        // We can do a strict match or a substring match (e.g. 'react' matches 'react.js')
-        const hasSkill = normalizedUserSkills.some(userSkill => 
-            userSkill === skill || userSkill.includes(skill) || skill.includes(userSkill)
-        );
+        // We do a strict match or a substring match but prevent short false positives
+        const hasSkill = normalizedUserSkills.some(userSkill => {
+            if (userSkill === skill) return true;
+            // Only allow substring matching if length is considerable (>2 chars) to avoid "c" matching "react"
+            if (userSkill.length > 2 && skill.includes(userSkill)) return true;
+            if (skill.length > 2 && userSkill.includes(skill)) return true;
+            return false;
+        });
 
         if (hasSkill) {
             matchCount++;

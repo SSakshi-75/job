@@ -3,7 +3,8 @@ import {
     applyToJob, 
     getMyApplications, 
     getJobApplicants, 
-    updateApplicationStatus 
+    updateApplicationStatus,
+    getRecruiterApplications 
 } from "../controllers/applicationController.js";
 import { protect, authorize } from "../middlewares/authMiddleware.js";
 
@@ -14,6 +15,9 @@ router.post("/:jobId", protect, authorize("job-seeker"), applyToJob);
 
 // Get applied jobs for current seeker
 router.get("/me", protect, authorize("job-seeker"), getMyApplications);
+
+// Get all applications received by the recruiter
+router.get("/recruiter", protect, authorize("recruiter"), getRecruiterApplications);
 
 // Get applicants for a specific job (recruiter only)
 router.get("/job/:jobId", protect, authorize("recruiter"), getJobApplicants);

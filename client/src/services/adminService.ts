@@ -1,31 +1,66 @@
 import api from "./api";
 
-// Get dashboard stats
+// ── Dashboard ──
 export const getAdminStats = async () => {
     const res = await api.get("/admin/stats");
     return res.data;
 };
 
-// Get all users
+// ── Users ──
 export const getAllUsers = async () => {
     const res = await api.get("/admin/users");
     return res.data;
 };
 
-// Get all jobs
-export const getAllJobs = async () => {
-    const res = await api.get("/admin/jobs");
-    return res.data;
-};
-
-// Ban or unban a user
 export const toggleBanUser = async (userId: string) => {
     const res = await api.put(`/admin/users/${userId}/ban`);
     return res.data;
 };
 
-// Delete a job
+export const changeUserRole = async (userId: string, role: string) => {
+    const res = await api.put(`/admin/users/${userId}/role`, { role });
+    return res.data;
+};
+
+export const deleteUserAdmin = async (userId: string) => {
+    const res = await api.delete(`/admin/users/${userId}`);
+    return res.data;
+};
+
+// ── Jobs ──
+export const getAllJobs = async () => {
+    const res = await api.get("/admin/jobs");
+    return res.data;
+};
+
+export const toggleJobStatus = async (jobId: string) => {
+    const res = await api.put(`/admin/jobs/${jobId}/status`);
+    return res.data;
+};
+
 export const deleteJobAdmin = async (jobId: string) => {
     const res = await api.delete(`/admin/jobs/${jobId}`);
+    return res.data;
+};
+
+// ── Applications ──
+export const getAllApplicationsAdmin = async () => {
+    const res = await api.get("/admin/applications");
+    return res.data;
+};
+
+export const deleteApplicationAdmin = async (appId: string) => {
+    const res = await api.delete(`/admin/applications/${appId}`);
+    return res.data;
+};
+
+// ── Interviews ──
+export const getAllInterviewsAdmin = async () => {
+    const res = await api.get("/admin/interviews");
+    return res.data;
+};
+
+export const deleteInterviewAdmin = async (interviewId: string) => {
+    const res = await api.delete(`/admin/interviews/${interviewId}`);
     return res.data;
 };
