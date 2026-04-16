@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Sparkles, CheckCircle2, AlertCircle, Loader2, Target, TrendingUp } from "lucide-react";
+import { Sparkles, AlertCircle, Loader2, Target, TrendingUp } from "lucide-react";
 import { getJobAIAnalysis } from "../services/jobService";
 
 interface AIAnalysis {

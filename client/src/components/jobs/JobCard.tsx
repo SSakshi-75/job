@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Clock, ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
+import { MapPin, Clock, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 interface JobCardProps {
     job: any;

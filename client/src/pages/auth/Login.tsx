@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogIn, Mail, Lock, Loader2 } from "lucide-react";
@@ -7,16 +7,16 @@ import api from "../../services/api.js";
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
-    const { loading, error } = useSelector((state) => state.auth);
+    const { loading, error } = useSelector((state: any) => state.auth);
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(setLoading(true));
         try {
@@ -39,7 +39,7 @@ const Login = () => {
                 dispatch(setUser(user));
                 navigate("/");
             }
-        } catch (err) {
+        } catch (err: any) {
             dispatch(setError(err.response?.data?.message || "Login failed"));
         }
     };
