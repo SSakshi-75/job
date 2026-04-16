@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an axios instance
 const api = axios.create({
-    baseURL: "http://localhost:5000/api", // In production this would be an env variable
+    baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
     withCredentials: true,
 });
 
