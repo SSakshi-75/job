@@ -67,4 +67,4 @@ const jobSchema = new mongoose.Schema({
 // Index for search
 jobSchema.index({ title: "text", description: "text", skills: "text" });
 
-export default mongoose.model("Job", jobSchema);
+export default mongoose.models.Job || mongoose.model("Job", jobSchema);
