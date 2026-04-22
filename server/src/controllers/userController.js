@@ -1,10 +1,13 @@
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const { PDFParse } = require("pdf-parse");
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // @desc    Get current user profile
 // @route   GET /api/user/profile
@@ -166,26 +169,19 @@ export const analyzeUserResume = async (req, res) => {
 
         // Try to parse PDF resume if it exists
         if (user.resume) {
-            // Fix: ensure user.resume doesn't have a leading slash when joining if it's meant to be relative to 'public'
             const relativePath = user.resume.startsWith("/") ? user.resume.substring(1) : user.resume;
             const fullPath = path.join(process.cwd(), "public", relativePath);
             
-            console.log(`Analyzing file at: ${fullPath}`);
-
             if (fs.existsSync(fullPath)) {
                 try {
+                    const pdf = require("pdf-parse");
                     const dataBuffer = fs.readFileSync(fullPath);
-                    const parser = new PDFParse({ data: dataBuffer });
-                    const pdfData = await parser.getText();
+                    const pdfData = await pdf(dataBuffer);
                     resumeText = pdfData.text || "";
-                    await parser.destroy();
                     analysisType = "resume";
-                    console.log(`Parsed resume text length: ${resumeText.length} characters`);
                 } catch (pdfErr) {
                     console.error("PDF Parsing Error during analysis:", pdfErr);
                 }
-            } else {
-                console.error(`Resume file not found on disk: ${fullPath}`);
             }
         }
 

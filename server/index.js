@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-config(); // Load environment variables first
+config();
 
 import express from "express";
 import compression from "compression";
@@ -7,6 +7,11 @@ import cookieParser from "cookie-parser";
 import connectDB from "./src/config/db.js";
 import cors from "cors";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Route files
 import authRoutes from "./src/routes/authRoutes.js";
@@ -17,39 +22,48 @@ import adminRoutes from "./src/routes/adminRoutes.js";
 import companyRoutes from "./src/routes/companyRoutes.js";
 import interviewRoutes from "./src/routes/interviewRoutes.js";
 
-// Initialize DB connection immediately
+// Initialize DB connection
 connectDB();
 
 // Initialize app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// CORS configuration - allow all for simplicity during debug if needed, or specific
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({ 
-  origin: [
-    "http://localhost:5173", 
-    "http://localhost:3000", 
-    process.env.FRONTEND_URL
-  ].filter(Boolean), 
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== "production") {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }, 
   credentials: true 
 }));
 
 app.use(compression());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-app.use(express.static("public"));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
-// Health check
-app.get("/health", (req, res) => res.status(200).json({ 
+// Health check for Vercel
+app.get("/api/health", (req, res) => res.status(200).json({ 
   status: "ok", 
-  message: "Server is healthy",
-  environment: process.env.NODE_ENV 
+  message: "Server is online",
+  timestamp: new Date().toISOString()
 }));
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Smart Job Portal API!");
+  res.send("Welcome to Smart Job Portal API (running on Vercel)");
 });
 
 // Mount routers
@@ -61,11 +75,12 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/interviews", interviewRoutes);
 
+// Export for Vercel
+export default app;
+
 // Local server startup
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   app.listen(PORT, () =>
     console.log("🚀 Server running at http://localhost:" + PORT)
   );
 }
-
-export default app;
