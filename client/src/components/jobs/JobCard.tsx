@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { MapPin, Clock, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { SERVER_URL } from "../../services/api";
 
