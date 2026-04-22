@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create an axios instance
-export const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL || "https://job-swart.vercel.app";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL || `${SERVER_URL}/api`,
