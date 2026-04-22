@@ -31,6 +31,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+// Middleware to ensure DB connection on every request (crucial for serverless)
+app.use(async (req, res, next) => {
+  if (process.env.MONGO_URI) {
+    await connectDB();
+  }
+  next();
+});
+
 app.use(express.static("public"));
 
 // Health check
@@ -49,12 +57,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/interviews", interviewRoutes);
 
-// Database connection
-if (process.env.MONGO_URI) {
-  connectDB();
-} else {
-  console.warn("⚠️ MONGO_URI is missing. Database features will be disabled.");
-}
+// Health check
+app.get("/health", (req, res) => res.status(200).json({ status: "ok", env: process.env.NODE_ENV }));
 
 // Local server startup
 if (process.env.NODE_ENV !== "production") {

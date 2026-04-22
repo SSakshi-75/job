@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
+    // Check if already connected
     if (mongoose.connection.readyState >= 1) return;
 
     const uri = process.env.MONGO_URI;
@@ -10,10 +11,12 @@ const connectDB = async () => {
     }
 
     try {
-        const conn = await mongoose.connect(uri);
-        console.log(`📡 Database Connected: ${conn.connection.host}`);
+        await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+        });
+        console.log("📡 Database Connected Successfully");
     } catch (error) {
-        console.error(`❌ Database Error: ${error.message}`);
+        console.error(`❌ Database Connection Error: ${error.message}`);
     }
 };
 
