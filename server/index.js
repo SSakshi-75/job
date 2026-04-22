@@ -16,9 +16,9 @@ import interviewRoutes from "./src/routes/interviewRoutes.js";
 
 config();
 
-const PORT = process.env.PORT || 5000;
-
+// Initialize app
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(cors({ 
   origin: ["http://localhost:5173", "http://localhost:3000", process.env.FRONTEND_URL].filter(Boolean), 
@@ -31,12 +31,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-// Middleware to ensure DB connection on every request (crucial for serverless)
+// Database middleware
 app.use(async (req, res, next) => {
-  if (process.env.MONGO_URI) {
-    await connectDB();
+  try {
+    if (process.env.MONGO_URI) await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB Middleware Error:", err);
+    next();
   }
-  next();
 });
 
 app.use(express.static("public"));
