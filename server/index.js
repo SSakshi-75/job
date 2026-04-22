@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors({ 
-  origin: ["http://localhost:5173", process.env.FRONTEND_URL].filter(Boolean), 
+  origin: ["http://localhost:5173", "http://localhost:3000", process.env.FRONTEND_URL].filter(Boolean), 
   credentials: true 
 }));
 
@@ -50,7 +50,11 @@ app.use("/api/companies", companyRoutes);
 app.use("/api/interviews", interviewRoutes);
 
 // Database connection
-connectDB();
+if (process.env.MONGO_URI) {
+  connectDB();
+} else {
+  console.warn("⚠️ MONGO_URI is missing. Database features will be disabled.");
+}
 
 // Local server startup
 if (process.env.NODE_ENV !== "production") {
