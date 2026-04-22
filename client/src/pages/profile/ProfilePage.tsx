@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { setUser } from "../../redux/slices/authSlice";
 import { fetchProfile, uploadProfilePicture, uploadResume } from "../../services/profileService";
+import { SERVER_URL } from "../../services/api";
 import EditProfile from "./EditProfile";
 
 const ProfilePage = () => {
@@ -98,7 +99,7 @@ const ProfilePage = () => {
     const isSeeker = profile?.role === "job-seeker";
     const isRecruiter = profile?.role === "recruiter";
     const avatarUrl = profile?.profilePicture
-        ? `http://localhost:5000${profile.profilePicture}`
+        ? `${SERVER_URL}${profile.profilePicture}`
         : null;
 
     return (
@@ -226,7 +227,7 @@ const ProfilePage = () => {
                                             </div>
                                         </div>
                                         <a
-                                            href={`http://localhost:5000${profile.resume}`}
+                                            href={`${SERVER_URL}${profile.resume}`}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="flex items-center gap-1 text-sm text-[var(--accent)] hover:underline font-medium"

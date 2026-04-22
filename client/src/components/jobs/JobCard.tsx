@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { MapPin, Clock, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { SERVER_URL } from "../../services/api";
 
 interface JobCardProps {
     job: any;
@@ -48,7 +48,7 @@ const JobCard = ({ job }: JobCardProps) => {
 
     let logoUrl = job.companyLogo || topBrandLogos[job.company] || null;
     if (logoUrl && logoUrl.startsWith("/uploads")) {
-        logoUrl = `http://localhost:5000${logoUrl}`;
+        logoUrl = `${SERVER_URL}${logoUrl}`;
     }
     const typeKey = (job.type || "").toLowerCase();
     const typeStyle = typeColors[typeKey] || { bg: "bg-slate-50", text: "text-slate-700", border: "border-slate-200" };

@@ -7,6 +7,7 @@ import {
     LayoutDashboard, Calendar, FileText
 } from "lucide-react";
 import { logout } from "../redux/slices/authSlice";
+import { SERVER_URL } from "../services/api";
 import NotificationBell from "./NotificationBell";
 
 // ── Nav config per role ────────────────────────────────────────────
@@ -103,7 +104,7 @@ const Navbar = () => {
                                     <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200 shrink-0 overflow-hidden shadow-sm">
                                         {user.profilePicture ? (
                                             <img
-                                                src={`http://localhost:5000${user.profilePicture}`}
+                                                src={`${SERVER_URL}${user.profilePicture}`}
                                                 alt={user.name}
                                                 className="w-full h-full object-cover"
                                                 onError={(e) => {

@@ -5,7 +5,7 @@ import {
     XCircle, FileText, ExternalLink, Clock,
     Briefcase, CalendarClock, Users, ChevronDown
 } from "lucide-react";
-import api from "../../services/api";
+import api, { SERVER_URL } from "../../services/api";
 
 const statusConfig: Record<string, { label: string; bg: string; text: string; border: string }> = {
     pending:   { label: "Pending",   bg: "bg-amber-50",   text: "text-amber-700",   border: "border-amber-200" },
@@ -160,7 +160,7 @@ const Applicants = () => {
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-lg shrink-0 shadow-md shadow-indigo-500/20 overflow-hidden">
                                             {profile.profilePicture ? (
-                                                <img src={`http://localhost:5000${profile.profilePicture}`} alt={profile.name} className="w-full h-full object-cover" />
+                                                <img src={`${SERVER_URL}${profile.profilePicture}`} alt={profile.name} className="w-full h-full object-cover" />
                                             ) : (
                                                 profile.name?.[0]?.toUpperCase() || "?"
                                             )}
@@ -192,7 +192,7 @@ const Applicants = () => {
                                         {/* View Resume */}
                                         {profile.resume && (
                                             <a
-                                                href={`http://localhost:5000${profile.resume}`}
+                                                href={`${SERVER_URL}${profile.resume}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 rounded-xl text-[11px] font-bold transition-colors"
