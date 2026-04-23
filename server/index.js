@@ -22,9 +22,6 @@ import adminRoutes from "./src/routes/adminRoutes.js";
 import companyRoutes from "./src/routes/companyRoutes.js";
 import interviewRoutes from "./src/routes/interviewRoutes.js";
 
-// Initialize DB connection
-connectDB();
-
 // Initialize app
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -60,6 +57,21 @@ app.get("/", (req, res) => {
   res.send("Welcome to Smart Job Portal API (running on Vercel)");
 });
 
+// Database connection middleware for Serverless environment
+app.use(async (req, res, next) => {
+  if (req.path.startsWith("/api")) {
+    try {
+      await connectDB();
+      next();
+    } catch (error) {
+      console.error("❌ Request blocked due to DB error:", error.message);
+      res.status(500).json({ success: false, message: "Database connection failed" });
+    }
+  } else {
+    next();
+  }
+});
+
 // Mount routers
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
@@ -69,12 +81,23 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/companies", companyRoutes);
 app.use("/api/interviews", interviewRoutes);
 
+// Initialize DB connection and start server
+const startServer = async () => {
+  try {
+    await connectDB();
+    
+    // Local server startup
+    if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+      app.listen(PORT, () =>
+        console.log("🚀 Server running at http://localhost:" + PORT)
+      );
+    }
+  } catch (error) {
+    console.error("❌ Failed to start server:", error.message);
+  }
+};
+
+startServer();
+
 // Export for Vercel
 export default app;
-
-// Local server startup
-if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
-  app.listen(PORT, () =>
-    console.log("🚀 Server running at http://localhost:" + PORT)
-  );
-}

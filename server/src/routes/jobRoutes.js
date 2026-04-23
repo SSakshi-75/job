@@ -20,11 +20,12 @@ router.get("/", getJobs);
 router.get("/ai/recommendations", protect, authorize("job-seeker"), getAIRecommendedJobs);
 router.get("/:id/ai/analyze", protect, authorize("job-seeker"), analyzeSpecificJobMatch);
 
-router.get("/:id", getJob);
-
 // Private - Recruiter only
 router.post("/", protect, authorize("recruiter", "admin"), createJob);
 router.get("/recruiter/my-jobs", protect, authorize("recruiter", "admin"), getMyJobs);
+
+router.get("/:id", getJob);
+
 router.put("/:id", protect, authorize("recruiter", "admin"), updateJob);
 router.delete("/:id", protect, authorize("recruiter", "admin", "admin"), deleteJob);
 

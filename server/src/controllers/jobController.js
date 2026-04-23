@@ -27,15 +27,17 @@ export const createJob = async (req, res) => {
 // @access  Public
 export const getJobs = async (req, res) => {
     try {
-        const { keyword, location, type, minSalary, maxSalary, skills, page = 1, limit = 10 } = req.query;
+        const { keyword, location, type, minSalary, maxSalary, skills, page = 1, limit = 100 } = req.query;
 
         const query = { status: "active" };
 
-        // Keyword search on title & description
+        // Keyword search on title, description, skills & company
         if (keyword) {
             query.$or = [
                 { title: { $regex: keyword, $options: "i" } },
                 { description: { $regex: keyword, $options: "i" } },
+                { company: { $regex: keyword, $options: "i" } },
+                { skills: { $in: [new RegExp(keyword, "i")] } },
             ];
         }
 
@@ -47,6 +49,11 @@ export const getJobs = async (req, res) => {
         // Job type filter
         if (type) {
             query.type = type;
+        }
+
+        // Experience filter
+        if (req.query.experience) {
+            query.experience = { $regex: req.query.experience, $options: "i" };
         }
 
         // Salary range filter
