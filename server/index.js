@@ -45,6 +45,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Health check for Vercel
 app.get("/api/health", (req, res) => res.status(200).json({ 
@@ -98,6 +99,12 @@ const startServer = async () => {
 };
 
 startServer();
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("Global Error Handler:", err);
+  res.status(500).json({ success: false, message: err.message || "Server Error" });
+});
 
 // Export for Vercel
 export default app;

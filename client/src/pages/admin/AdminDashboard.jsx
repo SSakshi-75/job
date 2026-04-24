@@ -107,8 +107,29 @@ const AdminDashboard = () => {
     };
 
     const isJobSuspicious = (job) => {
-        const triggers = ["money", "whatsapp", "payment", "investment", "quick", "lottery"];
-        return triggers.some(t => job.description.toLowerCase().includes(t));
+        const suspiciousKeywords = [
+            "money", "whatsapp", "payment", "investment", "quick", "lottery", 
+            "earn daily", "no experience required", "easy work", "pay first",
+            "deposit", "bank details", "telegram", "urgent hire", "income"
+        ];
+        
+        const jobText = (job.title + " " + job.description + " " + job.company).toLowerCase();
+        
+        // 1. Check for suspicious keywords
+        const hasSuspiciousKeyword = suspiciousKeywords.some(keyword => jobText.includes(keyword));
+        
+        // 2. Check for suspicious contact info (like phone numbers in text)
+        const phoneRegex = /(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+        const hasContactInfo = phoneRegex.test(jobText);
+        
+        // 3. Check for suspiciously high salary for 0 experience
+        const isHighSalaryZeroExp = (job.salary?.min > 100000 && (job.experience === "0" || job.experience === "Freshers"));
+
+        // 4. Check for generic company names
+        const genericCompanies = ["hiring", "work from home", "freelance", "private", "ltd"];
+        const isGenericCompany = genericCompanies.some(c => job.company.toLowerCase() === c);
+
+        return hasSuspiciousKeyword || hasContactInfo || isHighSalaryZeroExp || isGenericCompany;
     };
 
     const STATUS_COLORS = {

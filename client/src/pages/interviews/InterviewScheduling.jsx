@@ -246,7 +246,7 @@ const InterviewScheduling = () => {
                                             {interview.meetingLink && (
                                                 <a href={interview.meetingLink} target="_blank" rel="noopener noreferrer"
                                                     className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all">
-                                                    <LinkIcon className="w-3.5 h-3.5" /> Join
+                                                    <Link className="w-3.5 h-3.5" /> Join
                                                 </a>
                                             )}
                                             {isRecruiter && interview.status === "scheduled" && (

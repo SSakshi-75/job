@@ -17,7 +17,20 @@ const Register = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        let { name, value } = e.target;
+        
+        if (name === "name") {
+            // Only allow letters and spaces
+            value = value.replace(/[^a-zA-Z\s]/g, "");
+        } else if (name === "email") {
+            // Force lowercase
+            value = value.toLowerCase();
+        } else if (name === "password") {
+            // Limit to max 8 characters
+            if (value.length > 8) return;
+        }
+
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
@@ -90,6 +103,7 @@ const Register = () => {
                                 name="password"
                                 type="password"
                                 required
+                                maxLength={8}
                                 className="input-field pl-11 py-3"
                                 placeholder="Password"
                                 value={formData.password}

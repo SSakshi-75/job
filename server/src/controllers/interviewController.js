@@ -32,7 +32,7 @@ export const scheduleInterview = async (req, res) => {
         await Notification.create({
             recipient: application.applicant,
             sender: req.user._id,
-            type: "message",
+            type: "interview",
             content: `Interview scheduled for "${application.job.title}" on ${new Date(scheduledAt).toLocaleDateString()} via ${mode || "video"}`,
             job: application.job._id,
             application: applicationId,

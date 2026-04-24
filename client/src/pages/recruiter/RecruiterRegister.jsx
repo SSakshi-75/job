@@ -17,7 +17,20 @@ const RecruiterRegister = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        let { name, value } = e.target;
+        
+        if (name === "name") {
+            // Only allow letters and spaces
+            value = value.replace(/[^a-zA-Z\s]/g, "");
+        } else if (name === "email") {
+            // Force lowercase
+            value = value.toLowerCase();
+        } else if (name === "password") {
+            // Limit to max 8 characters
+            if (value.length > 8) return;
+        }
+
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
@@ -98,6 +111,7 @@ const RecruiterRegister = () => {
                                 name="password"
                                 type="password"
                                 required
+                                maxLength={8}
                                 className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-medium"
                                 placeholder="Create Password"
                                 value={formData.password}

@@ -8,18 +8,16 @@ const storage = multer.memoryStorage();
 // File filter
 const fileFilter = (req, file, cb) => {
     const allowedImageTypes = /jpeg|jpg|png|gif|webp/;
-    const allowedDocTypes = /pdf/;
-
-    const extName = path.extname(file.originalname).toLowerCase().replace(".", "");
 
     if (file.fieldname === "resume") {
-        if (allowedDocTypes.test(extName)) {
+        if (file.mimetype === "application/pdf") {
             cb(null, true);
         } else {
             cb(new Error("Resume must be a PDF file"), false);
         }
     } else {
-        if (allowedImageTypes.test(extName)) {
+        const extName = path.extname(file.originalname).toLowerCase().replace(".", "");
+        if (allowedImageTypes.test(extName) || file.mimetype.startsWith("image/")) {
             cb(null, true);
         } else {
             cb(new Error("Only image files (jpeg, jpg, png, gif, webp) are allowed"), false);

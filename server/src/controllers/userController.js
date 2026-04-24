@@ -66,7 +66,18 @@ export const uploadProfilePicture = async (req, res) => {
             return res.status(400).json({ success: false, message: "Please upload a file" });
         }
 
-        const filePath = `/uploads/${req.file.filename}`;
+        const ext = path.extname(req.file.originalname) || ".jpg";
+        const filename = `${req.user.id}-${Date.now()}${ext}`;
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        
+        if (!fs.existsSync(uploadsDir)) {
+            fs.mkdirSync(uploadsDir, { recursive: true });
+        }
+        
+        const fullPath = path.join(uploadsDir, filename);
+        fs.writeFileSync(fullPath, req.file.buffer);
+
+        const filePath = `/uploads/${filename}`;
 
         const user = await User.findByIdAndUpdate(
             req.user.id,
@@ -89,7 +100,18 @@ export const uploadUserResume = async (req, res) => {
             return res.status(400).json({ success: false, message: "Please upload a PDF file" });
         }
 
-        const filePath = `/uploads/${req.file.filename}`;
+        const ext = path.extname(req.file.originalname) || ".pdf";
+        const filename = `${req.user.id}-${Date.now()}${ext}`;
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        
+        if (!fs.existsSync(uploadsDir)) {
+            fs.mkdirSync(uploadsDir, { recursive: true });
+        }
+        
+        const fullPath = path.join(uploadsDir, filename);
+        fs.writeFileSync(fullPath, req.file.buffer);
+
+        const filePath = `/uploads/${filename}`;
 
         const user = await User.findByIdAndUpdate(
             req.user.id,
